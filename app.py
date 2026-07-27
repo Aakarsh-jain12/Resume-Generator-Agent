@@ -98,7 +98,7 @@ final_prompt = prompt + prompt_reader()
 #change this when required new resume by user, pass details
 
 user_info = st.text_input("Give Your Information")
-user_photo = st.sidebar.fileuploader("upload pic", type = 'image/jpeg')
+user_photo = st.sidebar.file_uploader("upload pic", type = 'image/jpeg')
 
 
 user_query = f"""Give resume for python Developer.
