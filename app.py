@@ -10,17 +10,21 @@ import pytesseract as pyt
 import numpy as np
 from langchain.messages import SystemMessage, HumanMessage
 from langchain.agents import create_agent
-
+from PIL import Image 
 
 #=========================FRONTEND========================
-st.title("AI RESUME GENERATOR")
+st.title("AI RESUME maker & JOB APPLY AGENT")
+st.image("https://framerusercontent.com/images/tzBelfM3npZvuhrC3Rt8As8lVzo.png?width=1536&height=1024")
 
 GOOGLE_API_KEY = st.sidebar.text_input("Google Api key", type = 'password')
 GROQ_API_KEY = st.sidebar.text_input("GROQ Api key", type = 'password')
 TAVILY_API_KEY = st.sidebar.text_input("TAVILY Api key", type = 'password')
 
-if not GOOGLE_API_KEY:
-  st.warning("Provide Google API key")
+if not (GOOGLE_API_KEY) and not (GROQ_API_KEY) and not (TAVILY_API_KEY):
+  st.sidebar.warning("Pass api keys")
+  st.stop
+else:
+  st.success("API KEYS LAODED")  
 
 
 #========================MODEL AND AGENT CODE======================
@@ -94,6 +98,32 @@ system instructions: Only give HTML code as output """
 
 final_prompt = prompt + prompt_reader()
 
+#==============================IAMGE UPLOADAR================================
+
+FILE = st.sidebar.file_uploader(
+  "choose an image file",
+  type=["jpg","jpeg","png","webp"]
+)
+
+if FILE is not None:
+  try:
+    image = Image.open(FILE)
+
+    st.sidebar.image(image,
+                     caption="Uploaded Image",
+                     use_container_width=True)
+
+    if image.mode in ("RGBA", "P"):
+      image = image.convert("RGB")
+
+    base_name = os.path.splitext(FILE.name)[0]
+    save_path = f"{base_name}.jpg"
+    
+    image.save(save_path, "JPEG")
+    st.sidebar.success(f" Image successfully saved as `{save_path}`!")
+
+  except Exception as e:
+    st.error(f"Error processing image: {e}")
 
 #change this when required new resume by user, pass details
 
