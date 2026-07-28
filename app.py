@@ -12,6 +12,7 @@ from langchain.messages import SystemMessage, HumanMessage
 from langchain.agents import create_agent
 from PIL import Image 
 import base64
+st.set_page_config(layout="wide")
 
 #=========================FRONTEND========================
 st.title("AI RESUME maker & JOB APPLY AGENT")
